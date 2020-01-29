@@ -8,7 +8,6 @@ pub trait Query {
         &self,
         client_id: String,
         user_id: String,
-        request_id: String,
         timestamp: u64,
     ) -> HeaderMap;
 }
@@ -46,7 +45,6 @@ impl Query for TextQuery {
         &self,
         client_id: String,
         user_id: String,
-        request_id: String,
         timestamp: u64,
     ) -> HeaderMap {
         let mut request_info = Map::new();
@@ -71,19 +69,4 @@ impl Query for TextQuery {
 
         header_map
     }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    // #[test]
-    // fn test_generate_auth_values() {
-    //     let client_id = String::from("EqQpJDGt0YozIb8Az6xvvA==");
-    //     let client_key = String::from("jLTVjUOFBSetQtA3l-lGlb75rPVqKmH_JFgOVZjl4BdJqOq7PwUpub8ROcNnXUTssqd6M_7rC8Jn3_FjITouxQ==");
-    //     let api_base = String::from("https://api.houndify.com/");
-    //     let auth_info = generate_auth_values(client_id, client_key, String::from("test_user"), String::from("deadbeef"), 1580278266);
-    //     println!("{:?}", auth_info);
-    //     assert_eq!(auth_info.hound_client_auth, "EqQpJDGt0YozIb8Az6xvvA==;1580278266;Ix3_MpLnyz1jGEV5g-mXxmbfgfZ85rD8-6S6yRTJEag=");
-    // }
 }

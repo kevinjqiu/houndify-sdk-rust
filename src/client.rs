@@ -90,3 +90,19 @@ impl Client {
         res.copy_to(&mut std::io::stdout()).unwrap();
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_generate_auth_values() {
+        let client_id = String::from("EqQpJDGt0YozIb8Az6xvvA==");
+        let client_key = String::from("jLTVjUOFBSetQtA3l-lGlb75rPVqKmH_JFgOVZjl4BdJqOq7PwUpub8ROcNnXUTssqd6M_7rC8Jn3_FjITouxQ==");
+        let api_base = String::from("https://api.houndify.com/");
+        let client = Client::new(api_base, client_id, client_key);
+        let auth_headers = client.build_auth_headers(String::from("test_user"), String::from("deadbeef"), 1580278266);
+        assert_eq!(auth_headers.get("Hound-Client-Authentication").unwrap(), "EqQpJDGt0YozIb8Az6xvvA==;1580278266;Ix3_MpLnyz1jGEV5g-mXxmbfgfZ85rD8-6S6yRTJEag=");
+        assert_eq!(auth_headers.get("Hound-Request-Authentication").unwrap(), "test_user;deadbeef");
+    }
+}
