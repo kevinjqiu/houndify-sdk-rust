@@ -76,7 +76,6 @@ impl Client {
             .get_headers(
                 self.client_id.clone(),
                 user_id.to_string(),
-                request_id.to_string(),
                 timestamp,
             )
             .iter()
