@@ -22,8 +22,6 @@ pub struct AuthInfo {
 
 #[derive(Debug)]
 pub struct TextQuery {
-    user_id: String,
-    query_id: String,
     pub query: String, // TODO: remove pub
 }
 
@@ -31,8 +29,6 @@ impl TextQuery {
     pub fn new(query_text: String) -> TextQuery {
         TextQuery {
             query: query_text,
-            user_id: "test_user".to_string(),
-            query_id: "deadbeef".to_string(),
         }
     }
 }
