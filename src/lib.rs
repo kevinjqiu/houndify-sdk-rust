@@ -7,7 +7,7 @@ mod query;
 mod tests {
     use super::*;
     #[test]
-    fn it_works() {
+    fn test_text_query() {
         let client_id = String::from("EqQpJDGt0YozIb8Az6xvvA==");
         let client_key = String::from("jLTVjUOFBSetQtA3l-lGlb75rPVqKmH_JFgOVZjl4BdJqOq7PwUpub8ROcNnXUTssqd6M_7rC8Jn3_FjITouxQ==");
         let api_base = String::from("https://api.houndify.com/");
