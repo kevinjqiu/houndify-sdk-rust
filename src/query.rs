@@ -4,12 +4,7 @@ use url::form_urlencoded;
 
 pub trait Query {
     fn get_url(&self, api_url: String) -> String;
-    fn get_headers(
-        &self,
-        client_id: String,
-        user_id: String,
-        timestamp: u64,
-    ) -> HeaderMap;
+    fn get_headers(&self, client_id: String, user_id: String, timestamp: u64) -> HeaderMap;
 }
 
 #[derive(Debug)]
@@ -26,9 +21,7 @@ pub struct TextQuery {
 
 impl TextQuery {
     pub fn new(query_text: String) -> TextQuery {
-        TextQuery {
-            query: query_text,
-        }
+        TextQuery { query: query_text }
     }
 }
 
@@ -41,12 +34,7 @@ impl Query for TextQuery {
         url
     }
 
-    fn get_headers(
-        &self,
-        client_id: String,
-        user_id: String,
-        timestamp: u64,
-    ) -> HeaderMap {
+    fn get_headers(&self, client_id: String, user_id: String, timestamp: u64) -> HeaderMap {
         let mut request_info = Map::new();
         request_info.insert(
             "TimeStamp".to_string(),
