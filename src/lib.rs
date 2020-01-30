@@ -15,6 +15,9 @@ mod tests {
         let c = Client::new(&api_base, &client_id, &client_key);
         // let q = query::TextQuery::new(String::from("what is 1+1?"));
         let q = "what is 1 + 1?".to_string();
-        c.text_query(&q);
+        let mut options = query::QueryOptions::new();
+        &options.user_id("kevinq");
+        let resp = c.text_query(&q, &options);
+        println!("{}", resp);
     }
 }

@@ -1,4 +1,4 @@
-use crate::query::{Query, TextQuery};
+use crate::query::{Query, QueryOptions, TextQuery};
 use base64;
 use hmac::{Hmac, Mac};
 use reqwest::blocking::Client as HttpClient;
@@ -56,29 +56,26 @@ impl Client {
         header_map
     }
 
-    pub fn text_query(&self, q: &str) -> String {
+    pub fn text_query(&self, q: &str, options: &QueryOptions) -> String {
         let query = TextQuery::new(q);
         let timestamp = get_current_timestamp();
         println!("Timestamp={}", timestamp);
 
-        let user_id = "test_user";
         let request_id = "deadbeef";
-        let mut headers = self.build_auth_headers(user_id, request_id, timestamp);
+        let mut headers = self.build_auth_headers(&options.user_id, request_id, timestamp);
 
         let url = query.get_url(&self.api_url);
         for (k, v) in query
-            .get_headers(&self.client_id, user_id, timestamp)
+            .get_headers(&self.client_id, &options.user_id, timestamp)
             .iter()
         {
             headers.insert(k.clone(), v.clone());
         }
-        let req: reqwest::RequestBuilder = self.http_client.get(&url).headers(headers);
+        let req = self.http_client.get(&url).headers(headers);
         println!("{:#?}", req);
-        let mut res: reqwest::Response = req.send().unwrap();
+        let res = req.send().unwrap();
         println!("{:#?}", res);
-
-        res.copy_to(&mut std::io::stdout()).unwrap();
-        "".to_string()
+        res.text().unwrap()
     }
 }
 
