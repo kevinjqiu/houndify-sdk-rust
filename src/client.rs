@@ -1,4 +1,5 @@
 use crate::query::{Query, QueryOptions, TextQuery};
+use crate::error::HoundifyError;
 use base64;
 use hmac::{Hmac, Mac};
 use reqwest::blocking::Client as HttpClient;
@@ -7,25 +8,6 @@ use sha2::Sha256;
 use std::time::SystemTime;
 
 type Result<T> = std::result::Result<T, HoundifyError>;
-
-#[derive(Debug)]
-pub struct HoundifyError {
-    inner: Box<dyn std::error::Error>,
-}
-
-impl std::fmt::Display for HoundifyError {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "An error occurred during the Houndify request")
-    }
-}
-
-impl std::error::Error for HoundifyError {}
-
-impl HoundifyError {
-    pub fn new(inner: Box<dyn std::error::Error>) -> Self {
-        HoundifyError { inner }
-    }
-}
 
 fn get_current_timestamp() -> u64 {
     SystemTime::now()
