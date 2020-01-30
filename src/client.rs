@@ -1,5 +1,6 @@
 use crate::error::HoundifyError;
 use crate::query::{Query, QueryOptions, TextQuery};
+use uuid::Uuid;
 use base64;
 use hmac::{Hmac, Mac};
 use reqwest::blocking::Client as HttpClient;
@@ -22,19 +23,27 @@ pub struct Client {
     client_id: String,
     client_key: String,
     http_client: HttpClient,
+    request_id_generator: fn()->String,
 }
 
 impl Client {
-    pub fn new(api_url: &str, client_id: &str, client_key: &str) -> Self {
+    pub fn new(api_url: &str, client_id: &str, client_key: &str, request_id_generator_option: Option<fn()->String>) -> Self {
         let http_client = reqwest::blocking::Client::builder()
             .http1_title_case_headers() // because houndify API headers are case-sensitive :(
             .build()
             .unwrap();
+
+        let request_id_generator = match request_id_generator_option {
+            Some(f) => f,
+            None => || Uuid::new_v4().to_string(),
+        };
+
         Client {
             api_url: api_url.to_string(),
             client_id: client_id.to_string(),
             client_key: client_key.to_string(),
             http_client,
+            request_id_generator,
         }
     }
 
@@ -110,7 +119,7 @@ mod tests {
         let client_id = String::from("EqQpJDGt0YozIb8Az6xvvA==");
         let client_key = String::from("jLTVjUOFBSetQtA3l-lGlb75rPVqKmH_JFgOVZjl4BdJqOq7PwUpub8ROcNnXUTssqd6M_7rC8Jn3_FjITouxQ==");
         let api_base = String::from("https://api.houndify.com/");
-        let client = Client::new(&api_base, &client_id, &client_key);
+        let client = Client::new(&api_base, &client_id, &client_key, None);
         let auth_headers = client
             .build_auth_headers("test_user", "deadbeef", 1580278266)
             .unwrap();
