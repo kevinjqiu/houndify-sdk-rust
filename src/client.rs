@@ -72,9 +72,9 @@ impl Client {
         {
             headers.insert(k.clone(), v.clone());
         }
-        let req = self.http_client.get(&url).headers(headers);
+        let req: reqwest::RequestBuilder = self.http_client.get(&url).headers(headers);
         println!("{:#?}", req);
-        let mut res = req.send().unwrap();
+        let mut res: reqwest::Response = req.send().unwrap();
         println!("{:#?}", res);
 
         res.copy_to(&mut std::io::stdout()).unwrap();
