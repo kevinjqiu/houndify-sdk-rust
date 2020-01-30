@@ -7,7 +7,7 @@ use reqwest::header::HeaderMap;
 use sha2::Sha256;
 use std::time::SystemTime;
 
-type Result<T> = std::result::Result<T, HoundifyError>;
+pub type Result<T> = std::result::Result<T, HoundifyError>;
 
 fn get_current_timestamp() -> u64 {
     SystemTime::now()
@@ -38,8 +38,8 @@ impl Client {
         }
     }
 
-    fn build_auth_headers(&self, user_id: &str, request_id: &str, timestamp: u64) -> HeaderMap {
-        let decoded_client_key = base64::decode_config(&self.client_key, base64::URL_SAFE).unwrap();
+    fn build_auth_headers(&self, user_id: &str, request_id: &str, timestamp: u64) -> std::result::Result<HeaderMap, Box<dyn std::error::Error>> {
+        let decoded_client_key = base64::decode_config(&self.client_key, base64::URL_SAFE)?;
         let mut mac: Hmac<Sha256> = Hmac::new_varkey(&decoded_client_key).unwrap();
         let data = format!("{};{}{}", user_id, request_id, timestamp.to_string());
         mac.input(data.as_bytes());
@@ -49,14 +49,13 @@ impl Client {
         header_map.insert(
             "Hound-Client-Authentication",
             format!("{};{};{}", &self.client_id, &timestamp, &signature)
-                .parse()
-                .unwrap(),
+                .parse()?,
         );
         header_map.insert(
             "Hound-Request-Authentication",
-            format!("{};{}", &user_id, &request_id).parse().unwrap(),
+            format!("{};{}", &user_id, &request_id).parse()?
         );
-        header_map
+        Ok(header_map)
     }
 
     pub fn text_query(&self, q: &str, options: &QueryOptions) -> Result<String> {
@@ -64,16 +63,26 @@ impl Client {
         let timestamp = get_current_timestamp();
         println!("Timestamp={}", timestamp);
 
-        let request_id = "deadbeef";
-        let mut headers = self.build_auth_headers(&options.user_id, request_id, timestamp);
+        let request_id = "deadbeef";  // TODO: generate a random one
+        let mut headers = match self.build_auth_headers(&options.user_id, request_id, timestamp) {
+            Ok(h) => h,
+            Err(e) => {
+                return Err(HoundifyError::new(e.into()))
+            }
+        };
 
         let url = query.get_url(&self.api_url);
-        for (k, v) in query
-            .get_headers(&self.client_id, &options.user_id, timestamp)
-            .iter()
-        {
+        let extra_headers = match query.get_headers(&self.client_id, &options.user_id, timestamp) {
+            Ok(h) => h,
+            Err(e) => {
+                return Err(HoundifyError::new(e.into()))
+            }
+        };
+
+        for (k, v) in extra_headers.iter() {
             headers.insert(k.clone(), v.clone());
         }
+
         let req = self.http_client.get(&url).headers(headers);
         println!("Request={:#?}", req);
 
@@ -104,7 +113,7 @@ mod tests {
         let client_key = String::from("jLTVjUOFBSetQtA3l-lGlb75rPVqKmH_JFgOVZjl4BdJqOq7PwUpub8ROcNnXUTssqd6M_7rC8Jn3_FjITouxQ==");
         let api_base = String::from("https://api.houndify.com/");
         let client = Client::new(&api_base, &client_id, &client_key);
-        let auth_headers = client.build_auth_headers("test_user", "deadbeef", 1580278266);
+        let auth_headers = client.build_auth_headers("test_user", "deadbeef", 1580278266).unwrap();
         assert_eq!(
             auth_headers.get("Hound-Client-Authentication").unwrap(),
             "EqQpJDGt0YozIb8Az6xvvA==;1580278266;Ix3_MpLnyz1jGEV5g-mXxmbfgfZ85rD8-6S6yRTJEag="

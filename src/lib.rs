@@ -1,4 +1,4 @@
-pub use crate::client::Client;
+pub use crate::client::{Client, Result};
 pub use crate::query::QueryOptions;
 pub use crate::error::HoundifyError;
 

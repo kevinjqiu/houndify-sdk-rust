@@ -1,6 +1,8 @@
 use reqwest::header::HeaderMap;
 use serde_json::{Map, Number, Value};
 use url::form_urlencoded;
+use std::result::Result;
+use std::error::Error;
 
 pub struct QueryOptions {
     pub(crate) user_id: String,
@@ -21,7 +23,7 @@ impl QueryOptions {
 
 pub trait Query {
     fn get_url(&self, api_url: &str) -> String;
-    fn get_headers(&self, client_id: &str, user_id: &str, timestamp: u64) -> HeaderMap;
+    fn get_headers(&self, client_id: &str, user_id: &str, timestamp: u64) -> Result<HeaderMap, Box<dyn Error>>;
 }
 
 #[derive(Debug)]
@@ -45,7 +47,7 @@ impl Query for TextQuery {
         url
     }
 
-    fn get_headers(&self, client_id: &str, user_id: &str, timestamp: u64) -> HeaderMap {
+    fn get_headers(&self, client_id: &str, user_id: &str, timestamp: u64) -> std::result::Result<HeaderMap, Box<dyn std::error::Error>> {
         let mut request_info = Map::new();
         request_info.insert(
             "TimeStamp".to_string(),
@@ -60,15 +62,15 @@ impl Query for TextQuery {
 
         // request_info.insert("Hound-Input-Language-English-Name".to_string(), Value::String("english".to_string()));
         // request_info.insert("Hound-Input-Language-IETF-Tag".to_string(), Value::String("en-CA".to_string()));
-        let request_info_json = serde_json::to_string(&request_info).unwrap();
+        let request_info_json = serde_json::to_string(&request_info)?;
 
         let mut header_map = HeaderMap::new();
-        header_map.insert("Hound-Request-Info", request_info_json.parse().unwrap());
+        header_map.insert("Hound-Request-Info", request_info_json.parse()?);
         header_map.insert(
             "Hound-Request-Info-Length",
-            request_info_json.len().to_string().parse().unwrap(),
+            request_info_json.len().to_string().parse()?,
         );
 
-        header_map
+        Ok(header_map)
     }
 }
