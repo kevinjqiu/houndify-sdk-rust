@@ -22,25 +22,20 @@ pub struct Client {
 }
 
 impl Client {
-    pub fn new(api_url: String, client_id: String, client_key: String) -> Self {
+    pub fn new(api_url: &str, client_id: &str, client_key: &str) -> Self {
         let http_client = reqwest::blocking::Client::builder()
             .http1_title_case_headers() // because houndify API headers are case-sensitive :(
             .build()
             .unwrap();
         Client {
-            api_url,
-            client_id,
-            client_key,
+            api_url: api_url.to_string(),
+            client_id: client_id.to_string(),
+            client_key: client_key.to_string(),
             http_client,
         }
     }
 
-    pub fn build_auth_headers(
-        &self,
-        user_id: String,
-        request_id: String,
-        timestamp: u64,
-    ) -> HeaderMap {
+    pub fn build_auth_headers(&self, user_id: &str, request_id: &str, timestamp: u64) -> HeaderMap {
         let decoded_client_key = base64::decode_config(&self.client_key, base64::URL_SAFE).unwrap();
         let mut mac: Hmac<Sha256> = Hmac::new_varkey(&decoded_client_key).unwrap();
         let data = format!("{};{}{}", user_id, request_id, timestamp.to_string());
@@ -61,19 +56,18 @@ impl Client {
         header_map
     }
 
-    pub fn text_query(&self, q: String) {
+    pub fn text_query(&self, q: &str) -> String {
         let query = TextQuery::new(q);
         let timestamp = get_current_timestamp();
         println!("Timestamp={}", timestamp);
 
         let user_id = "test_user";
         let request_id = "deadbeef";
-        let mut headers =
-            self.build_auth_headers(user_id.to_string(), request_id.to_string(), timestamp);
+        let mut headers = self.build_auth_headers(user_id, request_id, timestamp);
 
-        let url = query.get_url(self.api_url.clone());
+        let url = query.get_url(&self.api_url);
         for (k, v) in query
-            .get_headers(self.client_id.clone(), user_id.to_string(), timestamp)
+            .get_headers(&self.client_id, user_id, timestamp)
             .iter()
         {
             headers.insert(k.clone(), v.clone());
@@ -82,7 +76,9 @@ impl Client {
         println!("{:#?}", req);
         let mut res = req.send().unwrap();
         println!("{:#?}", res);
+
         res.copy_to(&mut std::io::stdout()).unwrap();
+        "".to_string()
     }
 }
 
@@ -95,12 +91,8 @@ mod tests {
         let client_id = String::from("EqQpJDGt0YozIb8Az6xvvA==");
         let client_key = String::from("jLTVjUOFBSetQtA3l-lGlb75rPVqKmH_JFgOVZjl4BdJqOq7PwUpub8ROcNnXUTssqd6M_7rC8Jn3_FjITouxQ==");
         let api_base = String::from("https://api.houndify.com/");
-        let client = Client::new(api_base, client_id, client_key);
-        let auth_headers = client.build_auth_headers(
-            String::from("test_user"),
-            String::from("deadbeef"),
-            1580278266,
-        );
+        let client = Client::new(&api_base, &client_id, &client_key);
+        let auth_headers = client.build_auth_headers("test_user", "deadbeef", 1580278266);
         assert_eq!(
             auth_headers.get("Hound-Client-Authentication").unwrap(),
             "EqQpJDGt0YozIb8Az6xvvA==;1580278266;Ix3_MpLnyz1jGEV5g-mXxmbfgfZ85rD8-6S6yRTJEag="
