@@ -1,4 +1,5 @@
 pub use crate::client::Client;
+pub use crate::query::QueryOptions;
 
 mod client;
 mod query;
@@ -8,16 +9,14 @@ mod tests {
     use super::*;
     #[test]
     fn test_text_query() {
-        let client_id = String::from("EqQpJDGt0YozIb8Az6xvvA==");
-        let client_key = String::from("jLTVjUOFBSetQtA3l-lGlb75rPVqKmH_JFgOVZjl4BdJqOq7PwUpub8ROcNnXUTssqd6M_7rC8Jn3_FjITouxQ==");
-        let api_base = String::from("https://api.houndify.com/");
+        let client_id = "EqQpJDGt0YozIb8Az6xvvA==";
+        let client_key = "jLTVjUOFBSetQtA3l-lGlb75rPVqKmH_JFgOVZjl4BdJqOq7PwUpub8ROcNnXUTssqd6M_7rC8Jn3_FjITouxQ==";
+        let api_base = "https://api.houndify.com/";
 
-        let c = Client::new(&api_base, &client_id, &client_key);
-        // let q = query::TextQuery::new(String::from("what is 1+1?"));
-        let q = "what is 1 + 1?".to_string();
-        let mut options = query::QueryOptions::new();
+        let c = Client::new(api_base, client_id, client_key);
+        let mut options = QueryOptions::new();
         &options.user_id("kevinq");
-        let resp = c.text_query(&q, &options);
+        let resp = c.text_query("what is one plus one?", &options);
         println!("{}", resp);
     }
 }
