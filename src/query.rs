@@ -1,8 +1,8 @@
 use reqwest::header::HeaderMap;
 use serde_json::{Map, Number, Value};
-use url::form_urlencoded;
-use std::result::Result;
 use std::error::Error;
+use std::result::Result;
+use url::form_urlencoded;
 
 pub struct QueryOptions {
     pub(crate) user_id: String,
@@ -23,7 +23,12 @@ impl QueryOptions {
 
 pub trait Query {
     fn get_url(&self, api_url: &str) -> String;
-    fn get_headers(&self, client_id: &str, user_id: &str, timestamp: u64) -> Result<HeaderMap, Box<dyn Error>>;
+    fn get_headers(
+        &self,
+        client_id: &str,
+        user_id: &str,
+        timestamp: u64,
+    ) -> Result<HeaderMap, Box<dyn Error>>;
 }
 
 #[derive(Debug)]
@@ -47,7 +52,12 @@ impl Query for TextQuery {
         url
     }
 
-    fn get_headers(&self, client_id: &str, user_id: &str, timestamp: u64) -> std::result::Result<HeaderMap, Box<dyn std::error::Error>> {
+    fn get_headers(
+        &self,
+        client_id: &str,
+        user_id: &str,
+        timestamp: u64,
+    ) -> std::result::Result<HeaderMap, Box<dyn std::error::Error>> {
         let mut request_info = Map::new();
         request_info.insert(
             "TimeStamp".to_string(),

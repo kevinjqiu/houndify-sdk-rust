@@ -1,10 +1,10 @@
 pub use crate::client::{Client, Result};
-pub use crate::query::QueryOptions;
 pub use crate::error::HoundifyError;
+pub use crate::query::QueryOptions;
 
 mod client;
-mod query;
 mod error;
+mod query;
 
 #[cfg(test)]
 mod tests {

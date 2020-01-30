@@ -3,7 +3,7 @@ use std::fmt::{Display, Formatter, Result};
 
 #[derive(Debug)]
 pub struct HoundifyError {
-    inner: Box<dyn Error>,  // TODO: display inner?
+    inner: Box<dyn Error>, // TODO: display inner?
 }
 
 impl Display for HoundifyError {
