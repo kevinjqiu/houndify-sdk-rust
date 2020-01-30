@@ -13,7 +13,7 @@ impl QueryOptions {
         }
     }
 
-    pub fn user_id(&mut self, user_id: &str) -> &mut Self {
+    pub fn user_id<'a>(&'a mut self, user_id: &str) -> &'a mut Self {
         self.user_id = user_id.to_string();
         self
     }

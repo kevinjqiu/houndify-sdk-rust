@@ -17,6 +17,9 @@ mod tests {
         let mut options = QueryOptions::new();
         &options.user_id("kevinq");
         let resp = c.text_query("what is one plus one?", &options);
-        println!("{}", resp);
+        match resp {
+            Ok(r) => println!("{}", r),
+            Err(e) => println!("Error={}", e),
+        }
     }
 }

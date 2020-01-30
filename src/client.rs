@@ -6,6 +6,27 @@ use reqwest::header::HeaderMap;
 use sha2::Sha256;
 use std::time::SystemTime;
 
+type Result<T> = std::result::Result<T, HoundifyError>;
+
+#[derive(Debug)]
+pub struct HoundifyError {
+    inner: Box<dyn std::error::Error>,
+}
+
+impl std::fmt::Display for HoundifyError {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "An error occurred during the Houndify request")
+    }
+}
+
+impl std::error::Error for HoundifyError {}
+
+impl HoundifyError {
+    pub fn new(inner: Box<dyn std::error::Error>) -> Self {
+        HoundifyError { inner }
+    }
+}
+
 fn get_current_timestamp() -> u64 {
     SystemTime::now()
         .duration_since(SystemTime::UNIX_EPOCH)
@@ -35,7 +56,7 @@ impl Client {
         }
     }
 
-    pub fn build_auth_headers(&self, user_id: &str, request_id: &str, timestamp: u64) -> HeaderMap {
+    fn build_auth_headers(&self, user_id: &str, request_id: &str, timestamp: u64) -> HeaderMap {
         let decoded_client_key = base64::decode_config(&self.client_key, base64::URL_SAFE).unwrap();
         let mut mac: Hmac<Sha256> = Hmac::new_varkey(&decoded_client_key).unwrap();
         let data = format!("{};{}{}", user_id, request_id, timestamp.to_string());
@@ -56,7 +77,7 @@ impl Client {
         header_map
     }
 
-    pub fn text_query(&self, q: &str, options: &QueryOptions) -> String {
+    pub fn text_query(&self, q: &str, options: &QueryOptions) -> Result<String> {
         let query = TextQuery::new(q);
         let timestamp = get_current_timestamp();
         println!("Timestamp={}", timestamp);
@@ -72,10 +93,22 @@ impl Client {
             headers.insert(k.clone(), v.clone());
         }
         let req = self.http_client.get(&url).headers(headers);
-        println!("{:#?}", req);
-        let res = req.send().unwrap();
-        println!("{:#?}", res);
-        res.text().unwrap()
+        println!("Request={:#?}", req);
+
+        let res = match req.send() {
+            Ok(r) => {
+                println!("Response={:#?}", r);
+                r
+            },
+            Err(e) => {
+                return Err(HoundifyError::new(e.into()))
+            }
+        };
+
+        match res.text() {
+            Ok(res) => Ok(res),
+            Err(e) => Err(HoundifyError::new(e.into())),
+        }
     }
 }
 
