@@ -76,8 +76,8 @@ impl Client {
         let timestamp = get_current_timestamp();
         println!("Timestamp={}", timestamp);
 
-        let request_id = "deadbeef"; // TODO: generate a random one
-        let mut headers = match self.build_auth_headers(&options.user_id, request_id, timestamp) {
+        let request_id = (&self.request_id_generator)();
+        let mut headers = match self.build_auth_headers(&options.user_id, &request_id, timestamp) {
             Ok(h) => h,
             Err(e) => return Err(HoundifyError::new(e.into())),
         };
