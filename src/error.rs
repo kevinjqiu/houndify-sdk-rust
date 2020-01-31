@@ -19,3 +19,20 @@ impl HoundifyError {
         HoundifyError { inner }
     }
 }
+
+#[derive(Debug)]
+pub struct InvalidRequestInfoError <'a> {
+    msg: &'a str,
+}
+
+impl <'a> InvalidRequestInfoError <'a> {
+    pub fn new(msg: &'a str) -> Self {
+        InvalidRequestInfoError{ msg }
+    }
+}
+
+impl <'a> Display for InvalidRequestInfoError <'a> {
+    fn fmt(&self, f: &mut Formatter) -> Result {
+        f.write_str(self.msg)
+    }
+}
