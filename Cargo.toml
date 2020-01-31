@@ -5,8 +5,8 @@ authors = ["Kevin Jing Qiu <kevin@idempotent.ca>"]
 edition = "2018"
 description = "Houndify SDK in Rust"
 license = "MIT"
-homepage = "houndify-sdk-rust.github.io"
-repository = "github.com/kevinjqiu/houndify-sdk-rust"
+homepage = "http://houndify-sdk-rust.github.io"
+repository = "https://github.com/kevinjqiu/houndify-sdk-rust"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
