@@ -72,34 +72,13 @@ impl Client {
         Ok(header_map)
     }
 
-    fn get_request_info_headers(&self, timestamp: u64, query: TextQuery) -> Result<Map<String, serde_json::value::Value>> {
-        let mut request_info = Map::new();
-        request_info.insert(
-            "TimeStamp".to_string(),
-            Value::Number(Number::from(timestamp)),
-        );
-        request_info.insert(
-            "SDK".to_string(),
-            Value::String("houndify-sdk-rust/1.0".to_string()),
-        );
-        request_info.insert("ClientID".to_string(), Value::String(self.client_id.to_string()));
-        request_info.insert("UserID".to_string(), Value::String(query.user_id.to_string()));
+    // fn get_request_info_headers(&self, timestamp: u64, query: TextQuery) -> Result<Map<String, serde_json::value::Value>> {
+    //     let mut request_info = Map::new();
+    //     request_info.insert("ClientID".to_string(), Value::String(self.client_id.to_string()));
+    //     Ok(request_info)
+    // }
 
-        // request_info.insert("Hound-Input-Language-English-Name".to_string(), Value::String("english".to_string()));
-        // request_info.insert("Hound-Input-Language-IETF-Tag".to_string(), Value::String("en-CA".to_string()));
-        // let request_info_json = serde_json::to_string(&request_info)?;
-
-        // let mut header_map = HeaderMap::new();
-        // header_map.insert("Hound-Request-Info", request_info_json.parse()?);
-        // header_map.insert(
-        //     "Hound-Request-Info-Length",
-        //     request_info_json.len().to_string().parse()?,
-        // );
-
-        Ok(request_info)
-    }
-
-    pub fn text_query(&self, query: TextQuery) -> Result<String> {
+    pub fn text_query(&self, mut query: TextQuery) -> Result<String> {
         let timestamp = get_current_timestamp();
         // println!("Timestamp={}", timestamp);
         let request_id = (&self.request_id_generator)();
@@ -111,11 +90,10 @@ impl Client {
 
         let url = query.get_url(&self.api_url);
 
-        let request_info = self.get_request_info_headers(timestamp, query)?;
-        let request_info_json = match serde_json::to_string(&request_info) {
-            Ok(j) => j,
-            Err(e) => return Err(HoundifyError::new(e.into())),
-        };
+        &query.request_info.timestamp(timestamp);
+        &query.request_info.client_id(&self.client_id);
+
+        let request_info_json = query.request_info.serialize()?;
         let request_info_len = request_info_json.len();
         headers.insert("Houndify-Request-Info", request_info_json.parse().unwrap());
         headers.insert("Houndify-Request-Info-Length", request_info_len.to_string().parse().unwrap());

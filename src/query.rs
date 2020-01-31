@@ -1,6 +1,6 @@
 use url::form_urlencoded;
 use serde_json::{Map, Value, Number};
-use crate::error::InvalidRequestInfoError;
+use crate::error::{InvalidRequestInfoError, HoundifyError, Result};
 
 pub trait Query {
     fn get_url(&self, api_url: &str) -> String;
@@ -44,10 +44,29 @@ impl RequestInfo {
         None
     }
 
+    /// Set timestamp
+    pub fn timestamp(&mut self, v: u64) -> Option<InvalidRequestInfoError> {
+        &self.request_info_map.insert("TimeStamp".to_string(), Value::Number(Number::from(v)));
+        None
+    }
+
+    /// Set ClientID
+    pub fn client_id(&mut self, v: &str) -> Option<InvalidRequestInfoError> {
+        &self.request_info_map.insert("ClientID".to_string(), Value::String(v.to_string()));
+        None
+    }
+
     /// Set arbitrary RequestInfo
     pub fn set(&mut self, k: String, v: Value) -> Option<InvalidRequestInfoError> {
         &self.request_info_map.insert(k, v);
         None
+    }
+
+    pub fn serialize(self) -> Result<String> {
+        match serde_json::to_string(&self.request_info_map) {
+            Ok(j) => Ok(j),
+            Err(e) => return Err(HoundifyError::new(e.into())),
+        };
     }
 }
 
@@ -60,6 +79,8 @@ pub struct TextQuery<'a> {
 
 impl <'a> TextQuery<'a> {
     pub fn new(query: &'a str, user_id: &'a str, request_info: RequestInfo) -> TextQuery <'a> {
+        request_info.set("SDK".to_string(), Value::String("houndify-sdk-rust/1.0".to_string()));  // TODO: get the SDK version from manifest?
+        request_info.set("UserID".to_string(), Value::String(user_id.to_string()));
         TextQuery {
             query,
             user_id,
