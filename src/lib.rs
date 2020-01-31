@@ -1,6 +1,6 @@
 pub use crate::client::{Client, Result};
 pub use crate::error::HoundifyError;
-pub use crate::query::QueryOptions;
+pub use crate::query::{TextQuery};
 
 mod client;
 mod error;
@@ -16,9 +16,8 @@ mod tests {
         let api_base = "https://api.houndify.com/";
 
         let c = Client::new(api_base, client_id, client_key, Some(|| String::from("deadbeef")));
-        let mut options = QueryOptions::new();
-        &options.user_id("kevinq");
-        let resp = c.text_query("what is one plus one?", &options);
+        let query = TextQuery::new("what is one plus one?", "kevinq");
+        let resp = c.text_query(query);
         match resp {
             Ok(r) => println!("{}", r),
             Err(e) => println!("Error={}", e),
