@@ -1,13 +1,13 @@
 use crate::error::HoundifyError;
 use crate::query::{Query, TextQuery};
-use serde_json::{Map, Number, Value};
-use uuid::Uuid;
 use base64;
 use hmac::{Hmac, Mac};
 use reqwest::blocking::Client as HttpClient;
 use reqwest::header::HeaderMap;
+use serde_json::{Map, Number, Value};
 use sha2::Sha256;
 use std::time::SystemTime;
+use uuid::Uuid;
 
 pub type Result<T> = std::result::Result<T, HoundifyError>;
 
@@ -24,11 +24,16 @@ pub struct Client {
     client_id: String,
     client_key: String,
     http_client: HttpClient,
-    request_id_generator: fn()->String,
+    request_id_generator: fn() -> String,
 }
 
 impl Client {
-    pub fn new(api_url: &str, client_id: &str, client_key: &str, request_id_generator_option: Option<fn()->String>) -> Self {
+    pub fn new(
+        api_url: &str,
+        client_id: &str,
+        client_key: &str,
+        request_id_generator_option: Option<fn() -> String>,
+    ) -> Self {
         let http_client = reqwest::blocking::Client::builder()
             .http1_title_case_headers() // because houndify API headers are case-sensitive :(
             .build()
@@ -96,7 +101,10 @@ impl Client {
         let request_info_json = query.request_info.serialize()?;
         let request_info_len = request_info_json.len();
         headers.insert("Houndify-Request-Info", request_info_json.parse().unwrap());
-        headers.insert("Houndify-Request-Info-Length", request_info_len.to_string().parse().unwrap());
+        headers.insert(
+            "Houndify-Request-Info-Length",
+            request_info_len.to_string().parse().unwrap(),
+        );
 
         let req = self.http_client.get(&url).headers(headers);
         println!("Request={:#?}", req);

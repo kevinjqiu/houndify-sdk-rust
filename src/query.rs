@@ -1,6 +1,6 @@
+use crate::error::{HoundifyError, InvalidRequestInfoError, Result};
+use serde_json::{Map, Number, Value};
 use url::form_urlencoded;
-use serde_json::{Map, Value, Number};
-use crate::error::{InvalidRequestInfoError, HoundifyError, Result};
 
 pub trait Query {
     fn get_url(&self, api_url: &str) -> String;
@@ -13,7 +13,7 @@ pub struct RequestInfo {
 
 impl RequestInfo {
     pub fn new() -> Self {
-        RequestInfo{
+        RequestInfo {
             request_info_map: Map::new(),
         }
     }
@@ -21,38 +21,50 @@ impl RequestInfo {
     /// Set the latitude of the request
     pub fn latitude(&mut self, v: f64) -> Option<InvalidRequestInfoError> {
         if v < -90.0 || v > 90.0 {
-            return Some(InvalidRequestInfoError::new("Latitude must between -90 and 90"));
+            return Some(InvalidRequestInfoError::new(
+                "Latitude must between -90 and 90",
+            ));
         }
         let n = match Number::from_f64(v) {
             Some(n) => n,
             None => return Some(InvalidRequestInfoError::new("Cannot parse latitude")),
         };
-        &self.request_info_map.insert("Latitude".to_string(), Value::Number(n));
+        &self
+            .request_info_map
+            .insert("Latitude".to_string(), Value::Number(n));
         None
     }
 
     /// Set the longitude of the request
     pub fn longitude(&mut self, v: f64) -> Option<InvalidRequestInfoError> {
         if v < -180.0 || v > 180.0 {
-            return Some(InvalidRequestInfoError::new("Longitude must between -180 and 180"));
+            return Some(InvalidRequestInfoError::new(
+                "Longitude must between -180 and 180",
+            ));
         }
         let n = match Number::from_f64(v) {
             Some(n) => n,
             None => return Some(InvalidRequestInfoError::new("Cannot parse longitude")),
         };
-        &self.request_info_map.insert("Longitude".to_string(), Value::Number(n));
+        &self
+            .request_info_map
+            .insert("Longitude".to_string(), Value::Number(n));
         None
     }
 
     /// Set timestamp
     pub fn timestamp(&mut self, v: u64) -> Option<InvalidRequestInfoError> {
-        &self.request_info_map.insert("TimeStamp".to_string(), Value::Number(Number::from(v)));
+        &self
+            .request_info_map
+            .insert("TimeStamp".to_string(), Value::Number(Number::from(v)));
         None
     }
 
     /// Set ClientID
     pub fn client_id(&mut self, v: &str) -> Option<InvalidRequestInfoError> {
-        &self.request_info_map.insert("ClientID".to_string(), Value::String(v.to_string()));
+        &self
+            .request_info_map
+            .insert("ClientID".to_string(), Value::String(v.to_string()));
         None
     }
 
@@ -77,9 +89,12 @@ pub struct TextQuery<'a> {
     pub(crate) request_info: RequestInfo,
 }
 
-impl <'a> TextQuery<'a> {
-    pub fn new(query: &'a str, user_id: &'a str, request_info: RequestInfo) -> TextQuery <'a> {
-        request_info.set("SDK".to_string(), Value::String("houndify-sdk-rust/1.0".to_string()));  // TODO: get the SDK version from manifest?
+impl<'a> TextQuery<'a> {
+    pub fn new(query: &'a str, user_id: &'a str, request_info: RequestInfo) -> TextQuery<'a> {
+        request_info.set(
+            "SDK".to_string(),
+            Value::String("houndify-sdk-rust/1.0".to_string()),
+        ); // TODO: get the SDK version from manifest?
         request_info.set("UserID".to_string(), Value::String(user_id.to_string()));
         TextQuery {
             query,
