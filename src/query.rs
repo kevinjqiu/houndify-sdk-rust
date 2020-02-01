@@ -7,7 +7,7 @@ pub trait Query {
     fn get_url(&self, api_url: &str) -> String;
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct RequestInfo {
     request_info_map: Map<String, Value>,
 }
@@ -124,7 +124,7 @@ impl Query for TextQuery<'_> {
 }
 
 pub struct VoiceQuery<'a> {
-    pub(crate) audio_stream: Box<dyn std::io::Read>,
+    pub(crate) audio_stream: Box<dyn std::io::Read + Send>,
     pub(crate) user_id: &'a str,
     pub(crate) request_info: RequestInfo,
 }
@@ -136,7 +136,7 @@ impl Query for VoiceQuery<'_> {
 }
 
 impl<'a> VoiceQuery<'a> {
-    pub fn new(audio_stream: Box<dyn std::io::Read>, user_id: &'a str, mut request_info: RequestInfo) -> Self {
+    pub fn new(audio_stream: Box<dyn std::io::Read + Send>, user_id: &'a str, mut request_info: RequestInfo) -> Self {
         VoiceQuery {
             audio_stream,
             user_id,

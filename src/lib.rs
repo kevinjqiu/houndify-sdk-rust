@@ -40,8 +40,12 @@ mod tests {
     fn test_voice_query() {
         let c = get_client();
         let file = File::open("wiespaet_16.wav").unwrap();
-        let mut buf = BufReader::new(file);
+        let buf = BufReader::new(file);
         let query = VoiceQuery::new(Box::new(buf), "kevinq", RequestInfo::new());
-        c.voice_query(query);
+        let resp = c.voice_query(query);
+        match resp {
+            Ok(r) => println!("{}", r),
+            Err(e) => println!("Error={}", e),
+        }
     }
 }
