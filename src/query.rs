@@ -7,7 +7,7 @@ pub trait Query {
     fn get_url(&self, api_url: &str) -> String;
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct RequestInfo {
     request_info_map: Map<String, Value>,
 }
@@ -69,6 +69,57 @@ impl RequestInfo {
         None
     }
 
+    /// Set PositionTime
+    pub fn position_time(&mut self, v: u64) -> Option<InvalidRequestInfoError> {
+        &self
+            .request_info_map
+            .insert("PositionTime".to_string(), Value::Number(Number::from(v)));
+        None
+
+    }
+
+    /// Set InputLanguageEnglishName
+    pub fn input_language_english_name(&mut self, v: &str) -> Option<InvalidRequestInfoError> {
+        &self.request_info_map.insert("InputLanguageEnglishName".to_string(), Value::String(v.to_string()));
+        None
+    }
+
+    /// Set InputLanguageNativeName
+    pub fn input_language_native_name(&mut self, v: &str) -> Option<InvalidRequestInfoError> {
+        &self.request_info_map.insert("InputLanguageNativeName".to_string(), Value::String(v.to_string()));
+        None
+    }
+
+    /// Set InputLanguageIETFTag
+    pub fn input_language_ietf_tag(&mut self, v: &str) -> Option<InvalidRequestInfoError> {
+        &self.request_info_map.insert("InputLanguageIETFTag".to_string(), Value::String(v.to_string()));
+        None
+    }
+
+    /// Set OutputLanguageEnglishName
+    pub fn output_language_english_name(&mut self, v: &str) -> Option<InvalidRequestInfoError> {
+        &self.request_info_map.insert("OutputLanguageEnglishName".to_string(), Value::String(v.to_string()));
+        None
+    }
+
+    /// Set OutputLanguageNativeName
+    pub fn output_language_native_name(&mut self, v: &str) -> Option<InvalidRequestInfoError> {
+        &self.request_info_map.insert("OutputLanguageNativeName".to_string(), Value::String(v.to_string()));
+        None
+    }
+
+    /// Set OutputLanguageIETFTag
+    pub fn output_language_ietf_tag(&mut self, v: &str) -> Option<InvalidRequestInfoError> {
+        &self.request_info_map.insert("OutputLanguageIETFTag".to_string(), Value::String(v.to_string()));
+        None
+    }
+
+    /// Set PartialTranscriptsDesired
+    pub fn partial_transcript_desired(&mut self, v: bool) -> Option<InvalidRequestInfoError> {
+        &self.request_info_map.insert("PartialTranscriptsDesired".to_string(), Value::Bool(v));
+        None
+    }
+
     /// Set arbitrary RequestInfo
     pub fn set(&mut self, k: String, v: Value) -> Option<InvalidRequestInfoError> {
         &self.request_info_map.insert(k, v);
@@ -111,5 +162,32 @@ impl Query for TextQuery<'_> {
             .append_pair("query", &self.query)
             .finish();
         url
+    }
+}
+
+pub struct VoiceQuery<'a> {
+    pub(crate) audio_stream: Box<dyn std::io::Read + Send>,
+    pub(crate) user_id: &'a str,
+    pub(crate) request_info: RequestInfo,
+}
+
+impl Query for VoiceQuery<'_> {
+    fn get_url(&self, api_url: &str) -> String {
+        return format!("{}v1/audio", api_url);
+    }
+}
+
+impl<'a> VoiceQuery<'a> {
+    pub fn new(audio_stream: Box<dyn std::io::Read + Send>, user_id: &'a str, mut request_info: RequestInfo) -> Self {
+        request_info.set(
+            "SDK".to_string(),
+            Value::String("houndify-sdk-rust/1.0".to_string()),
+        ); // TODO: get the SDK version from manifest?
+        request_info.set("UserID".to_string(), Value::String(user_id.to_string()));
+        VoiceQuery {
+            audio_stream,
+            user_id,
+            request_info,
+        }
     }
 }
