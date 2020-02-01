@@ -4,7 +4,6 @@ use base64;
 use hmac::{Hmac, Mac};
 use reqwest::blocking::Client as HttpClient;
 use reqwest::header::HeaderMap;
-use serde_json::{Map, Number, Value};
 use sha2::Sha256;
 use std::time::SystemTime;
 use uuid::Uuid;
@@ -77,15 +76,8 @@ impl Client {
         Ok(header_map)
     }
 
-    // fn get_request_info_headers(&self, timestamp: u64, query: TextQuery) -> Result<Map<String, serde_json::value::Value>> {
-    //     let mut request_info = Map::new();
-    //     request_info.insert("ClientID".to_string(), Value::String(self.client_id.to_string()));
-    //     Ok(request_info)
-    // }
-
     pub fn text_query(&self, mut query: TextQuery) -> Result<String> {
         let timestamp = get_current_timestamp();
-        // println!("Timestamp={}", timestamp);
         let request_id = (&self.request_id_generator)();
 
         let mut headers = match self.build_auth_headers(query.user_id, &request_id, timestamp) {

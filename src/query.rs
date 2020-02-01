@@ -1,4 +1,5 @@
-use crate::error::{HoundifyError, InvalidRequestInfoError, Result};
+use crate::error::{HoundifyError, InvalidRequestInfoError};
+use crate::Result;
 use serde_json::{Map, Number, Value};
 use url::form_urlencoded;
 
@@ -77,8 +78,8 @@ impl RequestInfo {
     pub fn serialize(self) -> Result<String> {
         match serde_json::to_string(&self.request_info_map) {
             Ok(j) => Ok(j),
-            Err(e) => return Err(HoundifyError::new(e.into())),
-        };
+            Err(e) => Err(HoundifyError::new(e.into())),
+        }
     }
 }
 
@@ -90,7 +91,7 @@ pub struct TextQuery<'a> {
 }
 
 impl<'a> TextQuery<'a> {
-    pub fn new(query: &'a str, user_id: &'a str, request_info: RequestInfo) -> TextQuery<'a> {
+    pub fn new(query: &'a str, user_id: &'a str, mut request_info: RequestInfo) -> TextQuery<'a> {
         request_info.set(
             "SDK".to_string(),
             Value::String("houndify-sdk-rust/1.0".to_string()),
