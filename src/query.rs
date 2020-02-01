@@ -69,6 +69,15 @@ impl RequestInfo {
         None
     }
 
+    /// Set PositionTime
+    pub fn position_time(&mut self, v: u64) -> Option<InvalidRequestInfoError> {
+        &self
+            .request_info_map
+            .insert("PositionTime".to_string(), Value::Number(Number::from(v)));
+        None
+
+    }
+
     /// Set arbitrary RequestInfo
     pub fn set(&mut self, k: String, v: Value) -> Option<InvalidRequestInfoError> {
         &self.request_info_map.insert(k, v);
@@ -111,5 +120,27 @@ impl Query for TextQuery<'_> {
             .append_pair("query", &self.query)
             .finish();
         url
+    }
+}
+
+pub struct VoiceQuery<'a> {
+    pub(crate) audio_stream: Box<dyn std::io::Read>,
+    pub(crate) user_id: &'a str,
+    pub(crate) request_info: RequestInfo,
+}
+
+impl Query for VoiceQuery<'_> {
+    fn get_url(&self, api_url: &str) -> String {
+        return format!("{}v1/audio", api_url);
+    }
+}
+
+impl<'a> VoiceQuery<'a> {
+    pub fn new(audio_stream: Box<dyn std::io::Read>, user_id: &'a str, mut request_info: RequestInfo) -> Self {
+        VoiceQuery {
+            audio_stream,
+            user_id,
+            request_info,
+        }
     }
 }

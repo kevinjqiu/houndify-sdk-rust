@@ -1,5 +1,5 @@
 use crate::error::HoundifyError;
-use crate::query::{Query, TextQuery};
+use crate::query::{Query, TextQuery, VoiceQuery};
 use base64;
 use hmac::{Hmac, Mac};
 use reqwest::blocking::Client as HttpClient;
@@ -113,6 +113,46 @@ impl Client {
             Ok(res) => Ok(res),
             Err(e) => Err(HoundifyError::new(e.into())),
         }
+    }
+
+    pub fn voice_query(&self, mut query: VoiceQuery) -> Result<String> {
+        let timestamp = get_current_timestamp();
+        let request_id = (&self.request_id_generator)();
+
+        let mut headers = match self.build_auth_headers(query.user_id, &request_id, timestamp) {
+            Ok(h) => h,
+            Err(e) => return Err(HoundifyError::new(e.into())),
+        };
+
+        let url = query.get_url(&self.api_url);
+
+        &query.request_info.timestamp(timestamp);
+        &query.request_info.client_id(&self.client_id);
+
+        let request_info_json = query.request_info.serialize()?;
+        let request_info_len = request_info_json.len();
+        headers.insert("Houndify-Request-Info", request_info_json.parse().unwrap());
+        headers.insert(
+            "Houndify-Request-Info-Length",
+            request_info_len.to_string().parse().unwrap(),
+        );
+
+        let req = self.http_client.post(&url).headers(headers);
+        println!("Request={:#?}", req);
+
+        let res = match req.send() {
+            Ok(r) => {
+                println!("Response={:#?}", r);
+                r
+            }
+            Err(e) => return Err(HoundifyError::new(e.into())),
+        };
+
+        match res.text() {
+            Ok(res) => Ok(res),
+            Err(e) => Err(HoundifyError::new(e.into())),
+        }
+
     }
 }
 
