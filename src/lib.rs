@@ -41,7 +41,9 @@ mod tests {
         let c = get_client();
         let file = File::open("wiespaet_16.wav").unwrap();
         let buf = BufReader::new(file);
-        let query = VoiceQuery::new(Box::new(buf), "kevinq", RequestInfo::new());
+        let mut request_info = RequestInfo::new();
+        request_info.input_language_english_name("German");
+        let query = VoiceQuery::new(Box::new(buf), "kevinq", request_info);
         let resp = c.voice_query(query);
         match resp {
             Ok(r) => println!("{}", r),
