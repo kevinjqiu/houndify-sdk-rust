@@ -37,13 +37,24 @@ mod tests {
     }
 
     #[test]
-    fn test_voice_query() {
+    fn test_voice_query_success() {
         let c = get_client();
         let file = File::open("whattimeisit.wav").unwrap();
         let buf = BufReader::new(file);
-        let request_info = RequestInfo::new();
-        // request_info.input_language_english_name("German");
-        let query = VoiceQuery::new(Box::new(buf), "kevinq", request_info);
+        let query = VoiceQuery::new(Box::new(buf), "kevinq", RequestInfo::new());
+        let resp = c.voice_query(query);
+        match resp {
+            Ok(r) => println!("{}", r),
+            Err(e) => println!("Error={}", e),
+        }
+    }
+
+    #[test]
+    fn test_voice_query_unsupported_audio_format() {
+        let c = get_client();
+        let file = File::open("whattimeisit.mp3").unwrap();
+        let buf = BufReader::new(file);
+        let query = VoiceQuery::new(Box::new(buf), "kevinq", RequestInfo::new());
         let resp = c.voice_query(query);
         match resp {
             Ok(r) => println!("{}", r),
