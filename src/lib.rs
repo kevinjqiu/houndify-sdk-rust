@@ -39,7 +39,7 @@ mod tests {
     #[test]
     fn test_voice_query_success() {
         let c = get_client();
-        let file = File::open("whattimeisit.wav").unwrap();
+        let file = File::open("test_cases/whattimeisit.wav").unwrap();
         let buf = BufReader::new(file);
         let query = VoiceQuery::new(Box::new(buf), "kevinq", RequestInfo::new());
         let resp = c.voice_query(query);
@@ -52,7 +52,7 @@ mod tests {
     #[test]
     fn test_voice_query_unsupported_audio_format() {
         let c = get_client();
-        let file = File::open("whattimeisit.mp3").unwrap();
+        let file = File::open("test_cases/whattimeisit.mp3").unwrap();
         let buf = BufReader::new(file);
         let query = VoiceQuery::new(Box::new(buf), "kevinq", RequestInfo::new());
         let resp = c.voice_query(query);
