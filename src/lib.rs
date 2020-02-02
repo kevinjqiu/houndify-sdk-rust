@@ -39,10 +39,10 @@ mod tests {
     #[test]
     fn test_voice_query() {
         let c = get_client();
-        let file = File::open("wiespaet_16.wav").unwrap();
+        let file = File::open("whattimeisit.m4a").unwrap();
         let buf = BufReader::new(file);
-        let mut request_info = RequestInfo::new();
-        request_info.input_language_english_name("German");
+        let request_info = RequestInfo::new();
+        // request_info.input_language_english_name("German");
         let query = VoiceQuery::new(Box::new(buf), "kevinq", request_info);
         let resp = c.voice_query(query);
         match resp {
