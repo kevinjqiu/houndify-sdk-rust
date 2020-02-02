@@ -39,7 +39,7 @@ mod tests {
     #[test]
     fn test_voice_query() {
         let c = get_client();
-        let file = File::open("whattimeisit.m4a").unwrap();
+        let file = File::open("wiespaet_16.wav").unwrap();
         let buf = BufReader::new(file);
         let request_info = RequestInfo::new();
         // request_info.input_language_english_name("German");

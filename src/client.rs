@@ -131,7 +131,10 @@ impl Client {
                 println!("Response={:#?}", r);
                 r
             }
-            Err(e) => return Err(HoundifyError::new(e.into())),
+            Err(e) => {
+                println!("Error={:#?}", e);
+                return Err(HoundifyError::new(e.into()));
+            }
         };
 
         match res.text() {
