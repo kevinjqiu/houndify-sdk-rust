@@ -148,7 +148,7 @@ impl Client {
 }
 
 #[cfg(test)]
-mod tests {
+mod client_tests {
     use super::*;
 
     #[test]

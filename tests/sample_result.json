@@ -1,0 +1,470 @@
+{
+  "Format": "SoundHoundVoiceSearchResult",
+  "FormatVersion": "1.0",
+  "Status": "OK",
+  "NumToReturn": 1,
+  "AllResults": [
+    {
+      "CommandKind": "InformationCommand",
+      "SpokenResponse": "It is 8:57 PM the previous day in Toronto.",
+      "SpokenResponseLong": "It is 8:57 PM the previous day in Toronto.",
+      "WrittenResponse": "It is 8:57 pm the previous day in Toronto, Canada.",
+      "WrittenResponseLong": "It is 8:57 pm the previous day in Toronto, Canada.",
+      "AutoListen": false,
+      "ConversationState": {
+        "ConversationStateTime": 1580781434,
+        "QueryEntities": {
+          "Where": [
+            {
+              "Type": "City",
+              "Label": "Toronto, Canada",
+              "SpokenLabel": "Toronto",
+              "Address": "Toronto, Ontario, Canada",
+              "City": "Toronto",
+              "Admin1": "Ontario",
+              "Country": "Canada",
+              "CountryCode": "CA",
+              "IATA": "YTO",
+              "Geohash": "dpz88g6gd5hq",
+              "Verified": true,
+              "HighConfidence": true,
+              "CurrentLocation": false,
+              "Latitude": 43.70011138916016,
+              "Longitude": -79.41629791259766,
+              "ReferenceDatum": "WGS84",
+              "TimeZone": "America/Toronto",
+              "Radius": 10,
+              "Links": [
+                {
+                  "Label": "Wikipedia",
+                  "URL": "https://en.wikipedia.org/wiki/Toronto"
+                }
+              ],
+              "TypeID": 5,
+              "SourceID": 2,
+              "RecordID": 6167865
+            }
+          ]
+        },
+        "ResponseEntities": {
+          "When": [
+            {
+              "Instant": {
+                "Date": {
+                  "Year": 2020,
+                  "Month": 2,
+                  "DayOfMonth": 3
+                },
+                "Time": {
+                  "Hour": 20,
+                  "AmPmUnknown": false,
+                  "Minute": 57,
+                  "Second": 14
+                }
+              },
+              "Details": {
+                "SetOfTimeKind": "DateAndOrTime",
+                "Point": {
+                  "Date": {
+                    "Year": 2020,
+                    "Month": 2,
+                    "DayOfMonth": 3
+                  },
+                  "Time": {
+                    "Hour": 20,
+                    "AmPmUnknown": false,
+                    "Minute": 57,
+                    "Second": 14
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "TimeInLocationQueryHistory": [
+          {
+            "DateAndTimeKind": "TimeInLocation",
+            "SourceDateTimeSpec": {
+              "DateAndTime": {
+                "Date": {
+                  "Year": 2020,
+                  "Month": 2,
+                  "DayOfMonth": 4
+                },
+                "Time": {
+                  "Hour": 1,
+                  "AmPmUnknown": false,
+                  "Minute": 57,
+                  "Second": 14
+                }
+              },
+              "DayPhase": "Unknown",
+              "YearMentioned": false,
+              "MonthMentioned": false,
+              "DayOfMonthMentioned": false,
+              "DayOfWeekMentioned": false,
+              "DateMentioned": false,
+              "TimeMentioned": false,
+              "TodayRequested": false,
+              "NowRequested": false,
+              "RelativeToNow": false,
+              "RelativeToConversationDateTime": false
+            },
+            "DestinationMapLocation": {
+              "Type": "City",
+              "Label": "Toronto, Canada",
+              "SpokenLabel": "Toronto",
+              "Address": "Toronto, Ontario, Canada",
+              "City": "Toronto",
+              "Admin1": "Ontario",
+              "Country": "Canada",
+              "CountryCode": "CA",
+              "IATA": "YTO",
+              "Geohash": "dpz88g6gd5hq",
+              "Verified": true,
+              "HighConfidence": true,
+              "CurrentLocation": false,
+              "Latitude": 43.70011138916016,
+              "Longitude": -79.41629791259766,
+              "ReferenceDatum": "WGS84",
+              "TimeZone": "America/Toronto",
+              "Radius": 10,
+              "Links": [
+                {
+                  "Label": "Wikipedia",
+                  "URL": "https://en.wikipedia.org/wiki/Toronto"
+                }
+              ],
+              "TypeID": 5,
+              "SourceID": 2,
+              "RecordID": 6167865
+            },
+            "DestinationDateTimeSpec": {
+              "DateAndTime": {
+                "Date": {
+                  "Year": 2020,
+                  "Month": 2,
+                  "DayOfMonth": 3
+                },
+                "Time": {
+                  "Hour": 20,
+                  "AmPmUnknown": false,
+                  "Minute": 57,
+                  "Second": 14
+                }
+              },
+              "DayPhase": "Unknown",
+              "YearMentioned": false,
+              "MonthMentioned": false,
+              "DayOfMonthMentioned": false,
+              "DayOfWeekMentioned": false,
+              "DateMentioned": false,
+              "TimeMentioned": false,
+              "TodayRequested": false,
+              "NowRequested": false,
+              "RelativeToNow": false,
+              "RelativeToConversationDateTime": false
+            },
+            "MapLocation": {
+              "Type": "City",
+              "Label": "Toronto, Canada",
+              "SpokenLabel": "Toronto",
+              "Address": "Toronto, Ontario, Canada",
+              "City": "Toronto",
+              "Admin1": "Ontario",
+              "Country": "Canada",
+              "CountryCode": "CA",
+              "IATA": "YTO",
+              "Geohash": "dpz88g6gd5hq",
+              "Verified": true,
+              "HighConfidence": true,
+              "CurrentLocation": false,
+              "Latitude": 43.70011138916016,
+              "Longitude": -79.41629791259766,
+              "ReferenceDatum": "WGS84",
+              "TimeZone": "America/Toronto",
+              "Radius": 10,
+              "Links": [
+                {
+                  "Label": "Wikipedia",
+                  "URL": "https://en.wikipedia.org/wiki/Toronto"
+                }
+              ],
+              "TypeID": 5,
+              "SourceID": 2,
+              "RecordID": 6167865
+            },
+            "DateTimeSpec": {
+              "DateAndTime": {
+                "Date": {
+                  "Year": 2020,
+                  "Month": 2,
+                  "DayOfMonth": 3
+                },
+                "Time": {
+                  "Hour": 20,
+                  "AmPmUnknown": false,
+                  "Minute": 57,
+                  "Second": 14
+                }
+              },
+              "DayPhase": "Unknown",
+              "YearMentioned": false,
+              "MonthMentioned": false,
+              "DayOfMonthMentioned": false,
+              "DayOfWeekMentioned": false,
+              "DateMentioned": false,
+              "TimeMentioned": false,
+              "TodayRequested": false,
+              "NowRequested": false,
+              "RelativeToNow": false,
+              "RelativeToConversationDateTime": false
+            }
+          }
+        ]
+      },
+      "ViewType": [
+        "Native",
+        "Template",
+        "HTML",
+        "None"
+      ],
+      "TemplateName": "VerticalTemplateList",
+      "TemplateData": {
+        "TemplateName": "VerticalTemplateList",
+        "Items": [
+          {
+            "DividerBelow": false,
+            "TemplateName": "SimpleText",
+            "TemplateData": {
+              "TemplateName": "SimpleText",
+              "Title": "8:57 pm",
+              "Subtitle": "Toronto, Canada"
+            }
+          }
+        ]
+      },
+      "HTMLData": {
+        "HTMLHead": {
+          "CSS": "<link rel=\"stylesheet\" href=\"//static.midomi.com/corpus/H_Zk82fGHFX/build/css/templates.min.css\">",
+          "JS": "<script src=\"//static.midomi.com/corpus/H_Zk82fGHFX/build/js/templates.min.js\"></script>"
+        },
+        "SmallScreenHTML": "<div class='h-template h-simple-text'>\n  <h3 class='h-template-title h-simple-text-title'>8:57 pm\n  </h3>\n  <p class='h-template-subtitle h-simple-text-subtitle'>Toronto, Canada\n  </p>\n</div>\n",
+        "LargeScreenHTML": "<div class='h-template h-simple-text'>\n  <h3 class='h-template-title h-simple-text-title'>8:57 pm\n  </h3>\n  <p class='h-template-subtitle h-simple-text-subtitle'>Toronto, Canada\n  </p>\n</div>\n"
+      },
+      "InformationNuggets": [
+        {
+          "NuggetKind": "DateAndTime",
+          "SpokenResponse": "It is 8:57 PM the previous day in Toronto.",
+          "SpokenResponseLong": "It is 8:57 PM the previous day in Toronto.",
+          "WrittenResponse": "It is 8:57 pm the previous day in Toronto, Canada.",
+          "WrittenResponseLong": "It is 8:57 pm the previous day in Toronto, Canada.",
+          "TemplateData": {
+            "TemplateName": "VerticalTemplateList",
+            "Items": [
+              {
+                "DividerBelow": false,
+                "TemplateName": "SimpleText",
+                "TemplateData": {
+                  "TemplateName": "SimpleText",
+                  "Title": "8:57 pm",
+                  "Subtitle": "Toronto, Canada"
+                }
+              }
+            ]
+          },
+          "SmallScreenHTML": "<div class='h-template h-simple-text'>\n  <h3 class='h-template-title h-simple-text-title'>8:57 pm\n  </h3>\n  <p class='h-template-subtitle h-simple-text-subtitle'>Toronto, Canada\n  </p>\n</div>\n",
+          "LargeScreenHTML": "<div class='h-template h-simple-text'>\n  <h3 class='h-template-title h-simple-text-title'>8:57 pm\n  </h3>\n  <p class='h-template-subtitle h-simple-text-subtitle'>Toronto, Canada\n  </p>\n</div>\n",
+          "DateAndTimeNuggetKind": "TimeInLocation",
+          "SourceDateTimeSpec": {
+            "DateAndTime": {
+              "Date": {
+                "Year": 2020,
+                "Month": 2,
+                "DayOfMonth": 4
+              },
+              "Time": {
+                "Hour": 1,
+                "AmPmUnknown": false,
+                "Minute": 57,
+                "Second": 14
+              }
+            },
+            "DayPhase": "Unknown",
+            "YearMentioned": false,
+            "MonthMentioned": false,
+            "DayOfMonthMentioned": false,
+            "DayOfWeekMentioned": false,
+            "DateMentioned": false,
+            "TimeMentioned": false,
+            "TodayRequested": false,
+            "NowRequested": false,
+            "RelativeToNow": false,
+            "RelativeToConversationDateTime": false
+          },
+          "DestinationMapLocation": {
+            "Type": "City",
+            "Label": "Toronto, Canada",
+            "SpokenLabel": "Toronto",
+            "Address": "Toronto, Ontario, Canada",
+            "City": "Toronto",
+            "Admin1": "Ontario",
+            "Country": "Canada",
+            "CountryCode": "CA",
+            "IATA": "YTO",
+            "Geohash": "dpz88g6gd5hq",
+            "Verified": true,
+            "HighConfidence": true,
+            "CurrentLocation": false,
+            "Latitude": 43.70011138916016,
+            "Longitude": -79.41629791259766,
+            "ReferenceDatum": "WGS84",
+            "TimeZone": "America/Toronto",
+            "Radius": 10,
+            "Links": [
+              {
+                "Label": "Wikipedia",
+                "URL": "https://en.wikipedia.org/wiki/Toronto"
+              }
+            ],
+            "TypeID": 5,
+            "SourceID": 2,
+            "RecordID": 6167865
+          },
+          "DestinationLocationsAndTimes": [
+            {
+              "MapLocation": {
+                "Type": "City",
+                "Label": "Toronto, Canada",
+                "SpokenLabel": "Toronto",
+                "Address": "Toronto, Ontario, Canada",
+                "City": "Toronto",
+                "Admin1": "Ontario",
+                "Country": "Canada",
+                "CountryCode": "CA",
+                "IATA": "YTO",
+                "Geohash": "dpz88g6gd5hq",
+                "Verified": true,
+                "HighConfidence": true,
+                "CurrentLocation": false,
+                "Latitude": 43.70011138916016,
+                "Longitude": -79.41629791259766,
+                "ReferenceDatum": "WGS84",
+                "TimeZone": "America/Toronto",
+                "Radius": 10,
+                "Links": [
+                  {
+                    "Label": "Wikipedia",
+                    "URL": "https://en.wikipedia.org/wiki/Toronto"
+                  }
+                ],
+                "TypeID": 5,
+                "SourceID": 2,
+                "RecordID": 6167865
+              },
+              "TimeZone": {
+                "OlsonName": "America/Toronto"
+              },
+              "DateTimeSpec": {
+                "DateAndTime": {
+                  "Date": {
+                    "Year": 2020,
+                    "Month": 2,
+                    "DayOfMonth": 3
+                  },
+                  "Time": {
+                    "Hour": 20,
+                    "AmPmUnknown": false,
+                    "Minute": 57,
+                    "Second": 14
+                  }
+                },
+                "DayPhase": "Unknown",
+                "YearMentioned": false,
+                "MonthMentioned": false,
+                "DayOfMonthMentioned": false,
+                "DayOfWeekMentioned": false,
+                "DateMentioned": false,
+                "TimeMentioned": false,
+                "TodayRequested": false,
+                "NowRequested": false,
+                "RelativeToNow": false,
+                "RelativeToConversationDateTime": false
+              }
+            }
+          ],
+          "DestinationDateTimeSpec": {
+            "DateAndTime": {
+              "Date": {
+                "Year": 2020,
+                "Month": 2,
+                "DayOfMonth": 3
+              },
+              "Time": {
+                "Hour": 20,
+                "AmPmUnknown": false,
+                "Minute": 57,
+                "Second": 14
+              }
+            },
+            "DayPhase": "Unknown",
+            "YearMentioned": false,
+            "MonthMentioned": false,
+            "DayOfMonthMentioned": false,
+            "DayOfWeekMentioned": false,
+            "DateMentioned": false,
+            "TimeMentioned": false,
+            "TodayRequested": false,
+            "NowRequested": false,
+            "RelativeToNow": false,
+            "RelativeToConversationDateTime": false
+          },
+          "IsDateRequested": false,
+          "IsTimeInFuture": false,
+          "IsTimeInPast": false
+        }
+      ]
+    }
+  ],
+  "Disambiguation": {
+    "NumToShow": 1,
+    "ChoiceData": [
+      {
+        "Transcription": "what time is it in toronto",
+        "ConfidenceScore": 0.6859999999999999,
+        "FormattedTranscription": "what time is it in toronto",
+        "FixedTranscription": "what time is it in toronto"
+      }
+    ]
+  },
+  "ResultsAreFinal": [
+    true
+  ],
+  "DomainUsage": [
+    {
+      "Domain": "Date and Time",
+      "DomainUniqueID": "4cb78beb-0fc8-4ca0-ad08-bc6f8fcb0318",
+      "CreditsUsed": 1
+    },
+    {
+      "Domain": "Query Glue",
+      "DomainUniqueID": "591bfa8a-7468-4e65-8632-dfa5ebf8f0f2",
+      "CreditsUsed": 0
+    }
+  ],
+  "BuildInfo": {
+    "User": "knightly",
+    "Date": "Sun Dec  8 20:17:31 PST 2019",
+    "Machine": "7fhpjh2.pnp.melodis.com",
+    "SVNRevision": "54997",
+    "SVNBranch": "dev_multi_machine",
+    "BuildNumber": "6107",
+    "Kind": "Low Fat",
+    "Variant": "release"
+  },
+  "QueryID": "d3836bc3-e912-051e-2f84-7fab4def5d25",
+  "ServerGeneratedId": "d3836bc3-e912-051e-2f84-7fab4def5d25",
+  "AudioLength": 3.279999971389771,
+  "RealSpeechTime": 1.432,
+  "RealTime": 1.456
+}
