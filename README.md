@@ -25,10 +25,9 @@ See a list of versions [here](https://crates.io/crates/houndify).
 
 let client_id = <YOUR_CLIENT_ID>;
 let client_key = <YOUR_CLIENT_KEY>;
-let api_base = "https://api.houndify.com/";
 
 let client = Client::new(
-    api_base,
+    houndify::DEFAULT_API_ENDPOINT,
     client_id,
     client_key,
     None,
