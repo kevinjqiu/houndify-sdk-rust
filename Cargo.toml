@@ -7,6 +7,8 @@ description = "Houndify SDK in Rust"
 license = "MIT"
 homepage = "http://houndify-sdk-rust.github.io"
 repository = "https://github.com/kevinjqiu/houndify-sdk-rust"
+readme = "README.md"
+
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
