@@ -1,6 +1,6 @@
 [package]
 name = "houndify"
-version = "0.3.1"
+version = "0.3.2"
 authors = ["Kevin Jing Qiu <kevin@idempotent.ca>"]
 edition = "2018"
 description = "Houndify SDK in Rust"
