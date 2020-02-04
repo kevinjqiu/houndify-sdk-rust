@@ -11,6 +11,9 @@ use uuid::Uuid;
 
 pub type Result<T> = std::result::Result<T, HoundifyError>;
 
+/// Default Houndify API endpoint
+pub static DEFAULT_API_ENDPOINT: &str = "https://api.houndify.com/";
+
 fn get_current_timestamp() -> u64 {
     SystemTime::now()
         .duration_since(SystemTime::UNIX_EPOCH)
