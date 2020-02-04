@@ -22,7 +22,7 @@ fn test_text_query() {
     let query = TextQuery::new("what is one plus one?", "kevinq", RequestInfo::new());
     let resp = c.text_query(query);
     match resp {
-        Ok(r) => println!("{}", r),
+        Ok(r) => println!("{:#?}", r),
         Err(e) => println!("Error={}", e),
     }
 }
@@ -35,7 +35,7 @@ fn test_voice_query_success() {
     let query = VoiceQuery::new(Box::new(buf), "kevinq", RequestInfo::new());
     let resp = c.voice_query(query);
     match resp {
-        Ok(r) => println!("{}", r),
+        Ok(r) => println!("{:#?}", r),
         Err(e) => println!("Error={}", e),
     }
 }
@@ -48,7 +48,7 @@ fn test_voice_query_unsupported_audio_format() {
     let query = VoiceQuery::new(Box::new(buf), "kevinq", RequestInfo::new());
     let resp = c.voice_query(query);
     match resp {
-        Ok(r) => println!("{}", r),
+        Ok(r) => println!("{:#?}", r),
         Err(e) => println!("Error={}", e),
     }
 }

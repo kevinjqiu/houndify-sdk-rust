@@ -1,5 +1,6 @@
 use crate::error::HoundifyError;
 use crate::query::{Query, RequestInfo, TextQuery, VoiceQuery};
+use crate::response::HoundServerResponse;
 use base64;
 use hmac::{Hmac, Mac};
 use reqwest::blocking::{Body, Client as HttpClient};
@@ -102,7 +103,7 @@ impl Client {
         Ok(headers)
     }
 
-    pub fn text_query(&self, mut query: TextQuery) -> Result<String> {
+    pub fn text_query(&self, mut query: TextQuery) -> Result<HoundServerResponse> {
         let timestamp = get_current_timestamp();
         let request_id = (&self.request_id_generator)();
         let headers = self.build_request_headers(
@@ -115,21 +116,16 @@ impl Client {
         let req = self.http_client.get(&url).headers(headers);
         println!("Request={:#?}", req);
 
-        let res = match req.send() {
-            Ok(r) => {
-                println!("Response={:#?}", r);
-                r
+        match req.send() {
+            Ok(r) => self.parse_response(r),
+            Err(e) => {
+                println!("Error={:#?}", e);
+                Err(HoundifyError::new(e.into()))
             }
-            Err(e) => return Err(HoundifyError::new(e.into())),
-        };
-
-        match res.text() {
-            Ok(res) => Ok(res),
-            Err(e) => Err(HoundifyError::new(e.into())),
         }
     }
 
-    pub fn voice_query(&self, mut query: VoiceQuery) -> Result<String> {
+    pub fn voice_query(&self, mut query: VoiceQuery) -> Result<HoundServerResponse> {
         let timestamp = get_current_timestamp();
         let request_id = (&self.request_id_generator)();
         let headers = self.build_request_headers(
@@ -145,24 +141,24 @@ impl Client {
             .body(Body::new(query.audio_stream))
             .headers(headers);
         println!("Request={:#?}", req);
-
-        let res = match req.send() {
-            Ok(r) => {
-                println!("Response={:#?}", r);
-                r
-            }
-            Err(e) => {
-                println!("Error={:#?}", e);
-                return Err(HoundifyError::new(e.into()));
-            }
-        };
-
-        match res.text() {
-            Ok(res) => Ok(res),
+        match req.send() {
+            Ok(r) => self.parse_response(r),
             Err(e) => {
                 println!("Error={:#?}", e);
                 Err(HoundifyError::new(e.into()))
             }
+        }
+    }
+
+    fn parse_response(&self, res: reqwest::blocking::Response) -> Result<HoundServerResponse> {
+        match res.text() {
+            Ok(res) => {
+                match serde_json::from_str(&res) {
+                    Ok(json) => Ok(json),
+                    Err(e) => Err(HoundifyError::new(e.into())),
+                }
+            },
+            Err(e) => Err(HoundifyError::new(e.into())),
         }
     }
 }
