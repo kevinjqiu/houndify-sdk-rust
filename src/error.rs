@@ -8,7 +8,11 @@ pub struct HoundifyError {
 
 impl Display for HoundifyError {
     fn fmt(&self, f: &mut Formatter) -> Result {
-        write!(f, "An error occurred during the Houndify request: {:#?}", self.inner)
+        write!(
+            f,
+            "An error occurred during the Houndify request: {:#?}",
+            self.inner
+        )
     }
 }
 
