@@ -4,7 +4,8 @@ use std::io::BufReader;
 
 fn get_client() -> Client {
     let client_id = "EqQpJDGt0YozIb8Az6xvvA==";
-    let client_key = "jLTVjUOFBSetQtA3l-lGlb75rPVqKmH_JFgOVZjl4BdJqOq7PwUpub8ROcNnXUTssqd6M_7rC8Jn3_FjITouxQ==";
+    let client_key =
+        "jLTVjUOFBSetQtA3l-lGlb75rPVqKmH_JFgOVZjl4BdJqOq7PwUpub8ROcNnXUTssqd6M_7rC8Jn3_FjITouxQ==";
     let api_base = "https://api.houndify.com/";
 
     Client::new(

@@ -106,6 +106,6 @@ mod response_tests {
         let file = std::fs::File::open("tests/sample_result.json").unwrap();
         let hsr: HoundServerResponse = serde_json::from_reader(file).unwrap();
         println!("{:#?}", hsr);
-        assert_eq!(1, 1);
+        assert!(true);
     }
 }

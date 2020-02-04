@@ -1,8 +1,8 @@
 use crate::error::HoundifyError;
-use crate::query::{Query, TextQuery, VoiceQuery, RequestInfo};
+use crate::query::{Query, RequestInfo, TextQuery, VoiceQuery};
 use base64;
 use hmac::{Hmac, Mac};
-use reqwest::blocking::{Client as HttpClient, Body};
+use reqwest::blocking::{Body, Client as HttpClient};
 use reqwest::header::HeaderMap;
 use sha2::Sha256;
 use std::time::SystemTime;
@@ -76,7 +76,13 @@ impl Client {
         Ok(header_map)
     }
 
-    fn build_request_headers(&self, user_id: &str, request_id: &str, timestamp: u64, request_info: &mut RequestInfo) -> Result<HeaderMap> {
+    fn build_request_headers(
+        &self,
+        user_id: &str,
+        request_id: &str,
+        timestamp: u64,
+        request_info: &mut RequestInfo,
+    ) -> Result<HeaderMap> {
         let mut headers = match self.build_auth_headers(user_id, &request_id, timestamp) {
             Ok(h) => h,
             Err(e) => return Err(HoundifyError::new(e.into())),
@@ -99,7 +105,12 @@ impl Client {
     pub fn text_query(&self, mut query: TextQuery) -> Result<String> {
         let timestamp = get_current_timestamp();
         let request_id = (&self.request_id_generator)();
-        let headers = self.build_request_headers(&query.user_id, &request_id, timestamp, &mut query.request_info)?;
+        let headers = self.build_request_headers(
+            &query.user_id,
+            &request_id,
+            timestamp,
+            &mut query.request_info,
+        )?;
         let url = query.get_url(&self.api_url);
         let req = self.http_client.get(&url).headers(headers);
         println!("Request={:#?}", req);
@@ -121,9 +132,18 @@ impl Client {
     pub fn voice_query(&self, mut query: VoiceQuery) -> Result<String> {
         let timestamp = get_current_timestamp();
         let request_id = (&self.request_id_generator)();
-        let headers = self.build_request_headers(&query.user_id, &request_id, timestamp, &mut query.request_info)?;
+        let headers = self.build_request_headers(
+            &query.user_id,
+            &request_id,
+            timestamp,
+            &mut query.request_info,
+        )?;
         let url = query.get_url(&self.api_url);
-        let req = self.http_client.post(&url).body(Body::new(query.audio_stream)).headers(headers);
+        let req = self
+            .http_client
+            .post(&url)
+            .body(Body::new(query.audio_stream))
+            .headers(headers);
         println!("Request={:#?}", req);
 
         let res = match req.send() {
