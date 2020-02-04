@@ -13,7 +13,9 @@ Houndify is a voice AI platform that allows anyone to add smart, conversational 
 
 # Usage
 
-Add `houndify = "0.2.0"` to your Cargo.toml file.
+Add `houndify = "<VERSION>"` to your Cargo.toml file.
+
+See a list of versions [here](https://crates.io/crates/houndify).
 
 ## Setup client
 
