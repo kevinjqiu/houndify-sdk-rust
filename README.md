@@ -7,6 +7,8 @@
                                     /____/   
 ```
 
+![Rust](https://github.com/kevinjqiu/houndify-sdk-rust/workflows/Rust/badge.svg)
+
 # Houndify Rust SDK 
 This is a rust library for the [Houndify](https://docs.houndify.com/reference) SDK.
 Houndify is a voice AI platform that allows anyone to add smart, conversational interfaces to anything with an internet connection.
